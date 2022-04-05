@@ -223,9 +223,6 @@
         DefaultActions:
           - Type: forward
             TargetGroupArn: !Ref TargetGroup
-        Tags:
-          - Key: "Name"
-            Value: "ELB-ListenerTCC"
 
     TargetGroup:
       Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -251,15 +248,12 @@
       Properties:
         VPCZoneIdentifier:
           - !Ref PrivateSubnetA
-        InstanceId: !Ref InstanceWebSrv1
+        InstanceId: !Ref WebServer1
         MinSize: '2'
         MaxSize: '4'
         DesiredCapacity: '2'
         TargetGroupARNs:
           - !Ref TargetGroup
-        Tags:
-          - Key: "Name"
-            Value: "Grupo-AS-TCC"
       
     DBSubnetGroup:
       Type: AWS::RDS::DBSubnetGroup
