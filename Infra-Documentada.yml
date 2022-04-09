@@ -244,14 +244,15 @@
         ImageId: ami-04505e74c0741db8d
         SecurityGroups:
           - !Ref SGProjeto
-        InstanceType: t2.medium
-    
+        InstanceType: t2.micro
+        KeyName: chave_tcc
+
     ASG:
       Type: AWS::AutoScaling::AutoScalingGroup
       Properties:
         VPCZoneIdentifier:
           - !Ref PrivateSubnetA
-        InstanceId: !Ref InstanceWebSrv1
+        LaunchConfigurationName: !Ref AutoScalingConfAMI
         MinSize: '2'
         MaxSize: '4'
         DesiredCapacity: '2'
@@ -259,6 +260,7 @@
           - !Ref TargetGroup
         Tags:
           - Key: "Name"
+            PropagateAtLaunch: false
             Value: "Grupo-AS-TCC"
       
     DBSubnetGroup:
