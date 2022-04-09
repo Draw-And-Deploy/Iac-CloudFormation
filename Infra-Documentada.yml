@@ -175,34 +175,6 @@
           - Key: "Name"
             Value: "TCC-SegurityGroup"
 
-    WebServer1:
-      Type: AWS::EC2::Instance
-      DependsOn: VPCProjeto
-      Properties:
-        ImageId: ami-04505e74c0741db8d
-        InstanceType: t2.micro
-        SubnetId: !Ref PrivateSubnetA
-        SecurityGroupIds: 
-        - !Ref SGProjeto
-        KeyName: chave_web1
-        Tags:
-          - Key: "Name"
-            Value: "Web-Server1"
-      
-    WebServer2:
-      Type: AWS::EC2::Instance
-      DependsOn: SGProjeto
-      Properties:
-        ImageId: ami-04505e74c0741db8d
-        InstanceType: t2.micro
-        SubnetId: !Ref PrivateSubnetB
-        SecurityGroupIds: 
-        - !Ref SGProjeto
-        KeyName: chave_web2
-        Tags:
-          - Key: "Name"
-            Value: "Web-Server2"
-
     ELBProjeto:
       Type: AWS::ElasticLoadBalancingV2::LoadBalancer
       Properties:
