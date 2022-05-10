@@ -1,14 +1,3 @@
----
-
-  Parameters:
-    MasterUsername:
-      Type: String
-      Description: Usuario do banco de dados
-
-    MasterUserPassword:
-      Type: String
-      Description: Senha do banco de dados
-
   Resources:
 
     VPCProjeto:
@@ -70,7 +59,7 @@
       Properties:
         Tags:
           - Key: "Name"
-            Value: "TCC-Internet"
+            Value: "Internet"
     
     AttachIGW:
       Type: AWS::EC2::VPCGatewayAttachment
@@ -175,34 +164,6 @@
           - Key: "Name"
             Value: "TCC-SegurityGroup"
 
-    WebServer1:
-      Type: AWS::EC2::Instance
-      DependsOn: VPCProjeto
-      Properties:
-        ImageId: ami-04505e74c0741db8d
-        InstanceType: t2.micro
-        SubnetId: !Ref PrivateSubnetA
-        SecurityGroupIds: 
-        - !Ref SGProjeto
-        KeyName: chave_web1
-        Tags:
-          - Key: "Name"
-            Value: "Web-Server1"
-      
-    WebServer2:
-      Type: AWS::EC2::Instance
-      DependsOn: SGProjeto
-      Properties:
-        ImageId: ami-04505e74c0741db8d
-        InstanceType: t2.micro
-        SubnetId: !Ref PrivateSubnetB
-        SecurityGroupIds: 
-        - !Ref SGProjeto
-        KeyName: chave_web2
-        Tags:
-          - Key: "Name"
-            Value: "Web-Server2"
-
     ELBProjeto:
       Type: AWS::ElasticLoadBalancingV2::LoadBalancer
       Properties:
@@ -241,47 +202,21 @@
         ImageId: ami-04505e74c0741db8d
         SecurityGroups:
           - !Ref SGProjeto
-        InstanceType: t2.medium
-    
+        InstanceType: t2.micro
+        KeyName: asgkey
+
     ASG:
       Type: AWS::AutoScaling::AutoScalingGroup
       Properties:
         VPCZoneIdentifier:
           - !Ref PrivateSubnetA
-        InstanceId: !Ref WebServer1
+        LaunchConfigurationName: !Ref AutoScalingConfAMI
         MinSize: '2'
         MaxSize: '4'
         DesiredCapacity: '2'
         TargetGroupARNs:
           - !Ref TargetGroup
-      
-    DBSubnetGroup:
-      Type: AWS::RDS::DBSubnetGroup
-      Properties:
-        DBSubnetGroupDescription: "Subnet Group for mySQL database"
-        SubnetIds:
-          - !Ref PrivateSubnetA
-          - !Ref PrivateSubnetB
-      
-    DBInstancia:
-      Type: AWS::RDS::DBInstance
-      Properties:
-        AllocatedStorage: 20
-        DBInstanceClass: db.t3.micro
-        Engine: mysql
-        EngineVersion: 8.0.28
-        MasterUsername: !Ref MasterUsername
-        MasterUserPassword: !Ref MasterUserPassword
-        BackupRetentionPeriod: 1
-        MultiAZ: false
-        PubliclyAccessible: true
-        StorageType: gp2
-        Port: 3306
-        DeletionProtection: false
-        DBSubnetGroupName: !Ref DBSubnetGroup
-        VPCSecurityGroups: 
-          - !Ref SGProjeto
         Tags:
           - Key: "Name"
-            Value: "TCC-Database"
-          
+            PropagateAtLaunch: false
+            Value: "Grupo-AS-TCC"
