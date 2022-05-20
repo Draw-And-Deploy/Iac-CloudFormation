@@ -169,8 +169,10 @@
       Type: AWS::ElasticLoadBalancingV2::LoadBalancer
       Properties:
         Subnets: 
-          - !Ref PrivateSubnetA
-          - !Ref PrivateSubnetB
+          - !Ref PublicSubnetA
+          - !Ref PublicSubnetB
+        SecurityGroups:
+          - !Ref SGProjeto
         Type: application
         Tags: 
           - Key: "Name"
@@ -200,10 +202,10 @@
     AutoScalingConfAMI:
       Type: AWS::AutoScaling::LaunchConfiguration
       Properties:
-        ImageId: ami-04505e74c0741db8d
+        ImageId: ami-0b467b4e080ee7bf2
         SecurityGroups:
           - !Ref SGProjeto
-        InstanceType: t2.micro
+        InstanceType: t3.small
         KeyName: asgkey
 
     ASG:
