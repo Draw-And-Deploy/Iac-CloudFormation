@@ -206,7 +206,7 @@
     AutoScalingConfAMI:
       Type: AWS::AutoScaling::LaunchConfiguration
       Properties:
-        ImageId: ami-0e7dda7066b902ee7
+        ImageId: ami-0ce2f404a694f2b37
         SecurityGroups:
           - !Ref SGProjeto
         InstanceType: t3.small
