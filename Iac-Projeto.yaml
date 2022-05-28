@@ -163,7 +163,7 @@
           - IpProtocol: icmp
             FromPort: 8
             ToPort: -1
-            CidrIp: 0.0.0.0/0
+            CidrIp: 192.168.0.0/16
         VpcId: !Ref VPCProjeto
         Tags:
           - Key: "Name"
@@ -206,7 +206,7 @@
     AutoScalingConfAMI:
       Type: AWS::AutoScaling::LaunchConfiguration
       Properties:
-        ImageId: ami-0ce2f404a694f2b37
+        ImageId: ami-0eb5735c532399d43
         SecurityGroups:
           - !Ref SGProjeto
         InstanceType: t3.small
